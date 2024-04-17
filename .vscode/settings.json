@@ -1,0 +1,23 @@
+{
+    "cmake.sourceDirectory": "C:/Myroot/vcprojects/VulcanProjects",
+    "cmake.configureArgs": [
+        "-DVCPKG_APPLOCAL_DEPS=ON",
+        "-DX_VCPKG_APPLOCAL_DEPS_INSTALL=ON",
+        "-DCMAKE_TOOLCHAIN_FILE=C:/Program Files/Vcpkg/vcpkg/scripts/buildsystems/vcpkg.cmake",
+        "-DVCPKG_TARGET_TRIPLET="
+    ],
+    "vcpkg.general.enable": true,
+    "vcpkg.target.hostTriplet": "x64-windows",
+    "vcpkg.target.defaultTriplet": "",
+    "vcpkg.target.useStaticLib": false,
+    "cmake.configureSettings": {
+        "CMAKE_TOOLCHAIN_FILE": "C:\\Program Files\\Vcpkg\\vcpkg/scripts/buildsystems/vcpkg.cmake"
+    },
+    "vcpkg.target.installDependencies": true,
+    "vcpkg.target.preferSystemLibs": false,
+    "vcpkg.target.useManifest": false,
+    "files.associations": {
+        "vector": "cpp",
+        "stdexcept": "cpp"
+    }
+}
