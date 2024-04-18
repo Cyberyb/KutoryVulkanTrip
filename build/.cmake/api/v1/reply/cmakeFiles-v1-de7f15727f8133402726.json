@@ -161,11 +161,11 @@
 		},
 		{
 			"isExternal" : true,
-			"path" : "C:/Program Files/Vcpkg/vcpkg/installed/x64-windows/share/glfw3/glfw3ConfigVersion.cmake"
+			"path" : "C:/Program Files/Vcpkg/vcpkg/packages/glfw3_x64-windows/share/glfw3/glfw3ConfigVersion.cmake"
 		},
 		{
 			"isExternal" : true,
-			"path" : "C:/Program Files/Vcpkg/vcpkg/installed/x64-windows/share/glfw3/glfw3Config.cmake"
+			"path" : "C:/Program Files/Vcpkg/vcpkg/packages/glfw3_x64-windows/share/glfw3/glfw3Config.cmake"
 		},
 		{
 			"isCMake" : true,
@@ -209,31 +209,31 @@
 		},
 		{
 			"isExternal" : true,
-			"path" : "C:/Program Files/Vcpkg/vcpkg/installed/x64-windows/share/glfw3/glfw3Targets.cmake"
+			"path" : "C:/Program Files/Vcpkg/vcpkg/packages/glfw3_x64-windows/share/glfw3/glfw3Targets.cmake"
 		},
 		{
 			"isExternal" : true,
-			"path" : "C:/Program Files/Vcpkg/vcpkg/installed/x64-windows/share/glfw3/glfw3Targets-debug.cmake"
+			"path" : "C:/Program Files/Vcpkg/vcpkg/packages/glfw3_x64-windows/share/glfw3/glfw3Targets-debug.cmake"
 		},
 		{
 			"isExternal" : true,
-			"path" : "C:/Program Files/Vcpkg/vcpkg/installed/x64-windows/share/glfw3/glfw3Targets-release.cmake"
+			"path" : "C:/Program Files/Vcpkg/vcpkg/packages/glfw3_x64-windows/share/glfw3/glfw3Targets-release.cmake"
 		},
 		{
 			"isExternal" : true,
-			"path" : "C:/Program Files/Vcpkg/vcpkg/installed/x64-windows/share/glm/glmConfigVersion.cmake"
+			"path" : "C:/Program Files/Vcpkg/vcpkg/packages/glm_x64-windows/share/glm/glmConfigVersion.cmake"
 		},
 		{
 			"isExternal" : true,
-			"path" : "C:/Program Files/Vcpkg/vcpkg/installed/x64-windows/share/glm/glmConfig.cmake"
+			"path" : "C:/Program Files/Vcpkg/vcpkg/packages/glm_x64-windows/share/glm/glmConfig.cmake"
 		},
 		{
 			"isExternal" : true,
-			"path" : "C:/Program Files/Vcpkg/vcpkg/installed/x64-windows/share/glm/glmConfig-debug.cmake"
+			"path" : "C:/Program Files/Vcpkg/vcpkg/packages/glm_x64-windows/share/glm/glmConfig-debug.cmake"
 		},
 		{
 			"isExternal" : true,
-			"path" : "C:/Program Files/Vcpkg/vcpkg/installed/x64-windows/share/glm/glmConfig-release.cmake"
+			"path" : "C:/Program Files/Vcpkg/vcpkg/packages/glm_x64-windows/share/glm/glmConfig-release.cmake"
 		},
 		{
 			"isCMake" : true,
@@ -272,8 +272,8 @@
 	"kind" : "cmakeFiles",
 	"paths" : 
 	{
-		"build" : "C:/Myroot/vcprojects/VulcanProjects/build",
-		"source" : "C:/Myroot/vcprojects/VulcanProjects"
+		"build" : "C:/Myroot/vcprojects/KutoryVulkanTrip/build",
+		"source" : "C:/Myroot/vcprojects/KutoryVulkanTrip"
 	},
 	"version" : 
 	{

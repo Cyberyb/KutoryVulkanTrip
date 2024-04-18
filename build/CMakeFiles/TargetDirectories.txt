@@ -1,6 +1,6 @@
-C:/Myroot/vcprojects/VulcanProjects/build/CMakeFiles/DiveintoVulkan.dir
-C:/Myroot/vcprojects/VulcanProjects/build/CMakeFiles/package.dir
-C:/Myroot/vcprojects/VulcanProjects/build/CMakeFiles/package_source.dir
-C:/Myroot/vcprojects/VulcanProjects/build/CMakeFiles/test.dir
-C:/Myroot/vcprojects/VulcanProjects/build/CMakeFiles/edit_cache.dir
-C:/Myroot/vcprojects/VulcanProjects/build/CMakeFiles/rebuild_cache.dir
+C:/Myroot/vcprojects/KutoryVulkanTrip/build/CMakeFiles/DiveintoVulkan.dir
+C:/Myroot/vcprojects/KutoryVulkanTrip/build/CMakeFiles/package.dir
+C:/Myroot/vcprojects/KutoryVulkanTrip/build/CMakeFiles/package_source.dir
+C:/Myroot/vcprojects/KutoryVulkanTrip/build/CMakeFiles/test.dir
+C:/Myroot/vcprojects/KutoryVulkanTrip/build/CMakeFiles/edit_cache.dir
+C:/Myroot/vcprojects/KutoryVulkanTrip/build/CMakeFiles/rebuild_cache.dir

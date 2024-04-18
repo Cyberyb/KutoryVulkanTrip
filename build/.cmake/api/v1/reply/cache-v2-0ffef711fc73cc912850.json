@@ -55,7 +55,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "c:/Myroot/vcprojects/VulcanProjects/build"
+			"value" : "c:/Myroot/vcprojects/KutoryVulkanTrip/build"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -587,7 +587,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Myroot/vcprojects/VulcanProjects/build/CMakeFiles/pkgRedirects"
+			"value" : "C:/Myroot/vcprojects/KutoryVulkanTrip/build/CMakeFiles/pkgRedirects"
 		},
 		{
 			"name" : "CMAKE_GENERATOR",
@@ -671,7 +671,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/Myroot/vcprojects/VulcanProjects"
+			"value" : "C:/Myroot/vcprojects/KutoryVulkanTrip"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",
@@ -1527,7 +1527,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Myroot/vcprojects/VulcanProjects/build"
+			"value" : "C:/Myroot/vcprojects/KutoryVulkanTrip/build"
 		},
 		{
 			"name" : "DiveintoVulkan_IS_TOP_LEVEL",
@@ -1551,7 +1551,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Myroot/vcprojects/VulcanProjects"
+			"value" : "C:/Myroot/vcprojects/KutoryVulkanTrip"
 		},
 		{
 			"name" : "FIND_PACKAGE_MESSAGE_DETAILS_Threads",
@@ -1895,7 +1895,7 @@
 				}
 			],
 			"type" : "PATH",
-			"value" : "C:/Program Files/Vcpkg/vcpkg/installed/x64-windows/share/glfw3"
+			"value" : "C:/Program Files/Vcpkg/vcpkg/packages/glfw3_x64-windows/share/glfw3"
 		},
 		{
 			"name" : "glm_DIR",
@@ -1907,7 +1907,7 @@
 				}
 			],
 			"type" : "PATH",
-			"value" : "C:/Program Files/Vcpkg/vcpkg/installed/x64-windows/share/glm"
+			"value" : "C:/Program Files/Vcpkg/vcpkg/packages/glm_x64-windows/share/glm"
 		}
 	],
 	"kind" : "cache",

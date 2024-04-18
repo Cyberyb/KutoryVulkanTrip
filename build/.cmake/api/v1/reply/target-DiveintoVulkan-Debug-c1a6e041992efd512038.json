@@ -43,25 +43,25 @@
 			{
 				"command" : 2,
 				"file" : 1,
-				"line" : 20,
-				"parent" : 0
-			},
-			{
-				"command" : 2,
-				"file" : 1,
-				"line" : 22,
-				"parent" : 0
-			},
-			{
-				"command" : 3,
-				"file" : 1,
-				"line" : 14,
+				"line" : 19,
 				"parent" : 0
 			},
 			{
 				"command" : 2,
 				"file" : 1,
 				"line" : 21,
+				"parent" : 0
+			},
+			{
+				"command" : 3,
+				"file" : 1,
+				"line" : 13,
+				"parent" : 0
+			},
+			{
+				"command" : 2,
+				"file" : 1,
+				"line" : 20,
 				"parent" : 0
 			}
 		]
@@ -86,7 +86,7 @@
 			[
 				{
 					"backtrace" : 5,
-					"path" : "C:/Myroot/vcprojects/VulcanProjects/build"
+					"path" : "C:/Myroot/vcprojects/KutoryVulkanTrip/build"
 				},
 				{
 					"backtrace" : 5,
@@ -95,7 +95,12 @@
 				{
 					"backtrace" : 6,
 					"isSystem" : true,
-					"path" : "C:/Program Files/Vcpkg/vcpkg/installed/x64-windows/include"
+					"path" : "C:/Program Files/Vcpkg/vcpkg/packages/glm_x64-windows/include"
+				},
+				{
+					"backtrace" : 4,
+					"isSystem" : true,
+					"path" : "C:/Program Files/Vcpkg/vcpkg/packages/glfw3_x64-windows/include"
 				}
 			],
 			"language" : "CXX",
@@ -125,7 +130,7 @@
 			},
 			{
 				"backtrace" : 4,
-				"fragment" : "\"C:\\Program Files\\Vcpkg\\vcpkg\\installed\\x64-windows\\debug\\lib\\glfw3dll.lib\"",
+				"fragment" : "\"C:\\Program Files\\Vcpkg\\vcpkg\\packages\\glfw3_x64-windows\\debug\\lib\\glfw3dll.lib\"",
 				"role" : "libraries"
 			},
 			{

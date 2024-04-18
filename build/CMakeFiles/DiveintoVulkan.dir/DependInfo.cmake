@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "C:/Myroot/vcprojects/VulcanProjects/src/main.cpp" "CMakeFiles/DiveintoVulkan.dir/src/main.cpp.obj" "gcc" "CMakeFiles/DiveintoVulkan.dir/src/main.cpp.obj.d"
+  "C:/Myroot/vcprojects/KutoryVulkanTrip/src/main.cpp" "CMakeFiles/DiveintoVulkan.dir/src/main.cpp.obj" "gcc" "CMakeFiles/DiveintoVulkan.dir/src/main.cpp.obj.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

@@ -7,7 +7,7 @@ set(CMAKE_DEPENDS_GENERATOR "MinGW Makefiles")
 # The top level Makefile was generated from the following files:
 set(CMAKE_MAKEFILE_DEPENDS
   "CMakeCache.txt"
-  "C:/Myroot/vcprojects/VulcanProjects/CMakeLists.txt"
+  "C:/Myroot/vcprojects/KutoryVulkanTrip/CMakeLists.txt"
   "CMakeFiles/3.29.0-rc4/CMakeCCompiler.cmake"
   "CMakeFiles/3.29.0-rc4/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.29.0-rc4/CMakeRCCompiler.cmake"
@@ -47,15 +47,15 @@ set(CMAKE_MAKEFILE_DEPENDS
   "C:/Program Files/CMake/share/cmake-3.29/Modules/Platform/Windows.cmake"
   "C:/Program Files/CMake/share/cmake-3.29/Modules/Platform/WindowsPaths.cmake"
   "C:/Program Files/CMake/share/cmake-3.29/Templates/CPackConfig.cmake.in"
-  "C:/Program Files/Vcpkg/vcpkg/installed/x64-windows/share/glfw3/glfw3Config.cmake"
-  "C:/Program Files/Vcpkg/vcpkg/installed/x64-windows/share/glfw3/glfw3ConfigVersion.cmake"
-  "C:/Program Files/Vcpkg/vcpkg/installed/x64-windows/share/glfw3/glfw3Targets-debug.cmake"
-  "C:/Program Files/Vcpkg/vcpkg/installed/x64-windows/share/glfw3/glfw3Targets-release.cmake"
-  "C:/Program Files/Vcpkg/vcpkg/installed/x64-windows/share/glfw3/glfw3Targets.cmake"
-  "C:/Program Files/Vcpkg/vcpkg/installed/x64-windows/share/glm/glmConfig-debug.cmake"
-  "C:/Program Files/Vcpkg/vcpkg/installed/x64-windows/share/glm/glmConfig-release.cmake"
-  "C:/Program Files/Vcpkg/vcpkg/installed/x64-windows/share/glm/glmConfig.cmake"
-  "C:/Program Files/Vcpkg/vcpkg/installed/x64-windows/share/glm/glmConfigVersion.cmake"
+  "C:/Program Files/Vcpkg/vcpkg/packages/glfw3_x64-windows/share/glfw3/glfw3Config.cmake"
+  "C:/Program Files/Vcpkg/vcpkg/packages/glfw3_x64-windows/share/glfw3/glfw3ConfigVersion.cmake"
+  "C:/Program Files/Vcpkg/vcpkg/packages/glfw3_x64-windows/share/glfw3/glfw3Targets-debug.cmake"
+  "C:/Program Files/Vcpkg/vcpkg/packages/glfw3_x64-windows/share/glfw3/glfw3Targets-release.cmake"
+  "C:/Program Files/Vcpkg/vcpkg/packages/glfw3_x64-windows/share/glfw3/glfw3Targets.cmake"
+  "C:/Program Files/Vcpkg/vcpkg/packages/glm_x64-windows/share/glm/glmConfig-debug.cmake"
+  "C:/Program Files/Vcpkg/vcpkg/packages/glm_x64-windows/share/glm/glmConfig-release.cmake"
+  "C:/Program Files/Vcpkg/vcpkg/packages/glm_x64-windows/share/glm/glmConfig.cmake"
+  "C:/Program Files/Vcpkg/vcpkg/packages/glm_x64-windows/share/glm/glmConfigVersion.cmake"
   "C:/Program Files/Vcpkg/vcpkg/scripts/buildsystems/vcpkg.cmake"
   )
 

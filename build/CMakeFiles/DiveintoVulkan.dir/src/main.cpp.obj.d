@@ -1,5 +1,5 @@
 CMakeFiles/DiveintoVulkan.dir/src/main.cpp.obj: \
- C:\Myroot\vcprojects\VulcanProjects\src\main.cpp \
+ C:\Myroot\vcprojects\KutoryVulkanTrip\src\main.cpp \
  C:/VulkanSDK/1.3.275.0/Include/vulkan/vulkan.h \
  C:/VulkanSDK/1.3.275.0/Include/vulkan/vk_platform.h \
  C:/msys64/ucrt64/lib/gcc/x86_64-w64-mingw32/13.2.0/include/stddef.h \
@@ -21,7 +21,7 @@ CMakeFiles/DiveintoVulkan.dir/src/main.cpp.obj: \
  C:/VulkanSDK/1.3.275.0/Include/vk_video/vulkan_video_codec_h265std.h \
  C:/VulkanSDK/1.3.275.0/Include/vk_video/vulkan_video_codec_h264std_decode.h \
  C:/VulkanSDK/1.3.275.0/Include/vk_video/vulkan_video_codec_h265std_decode.h \
- C:/PROGRA~1/Vcpkg/vcpkg/INSTAL~1/X64-WI~1/include/GLFW/glfw3.h \
+ C:/PROGRA~1/Vcpkg/vcpkg/packages/GLFW3_~1/include/GLFW/glfw3.h \
  C:/msys64/ucrt64/include/GL/gl.h \
  C:/msys64/ucrt64/include/c++/13.2.0/iostream \
  C:/msys64/ucrt64/include/c++/13.2.0/bits/requires_hosted.h \
@@ -155,4 +155,16 @@ CMakeFiles/DiveintoVulkan.dir/src/main.cpp.obj: \
  C:/msys64/ucrt64/include/c++/13.2.0/bits/stl_uninitialized.h \
  C:/msys64/ucrt64/include/c++/13.2.0/bits/stl_vector.h \
  C:/msys64/ucrt64/include/c++/13.2.0/bits/stl_bvector.h \
- C:/msys64/ucrt64/include/c++/13.2.0/bits/vector.tcc
+ C:/msys64/ucrt64/include/c++/13.2.0/bits/vector.tcc \
+ C:/msys64/ucrt64/include/c++/13.2.0/cstring \
+ C:/msys64/ucrt64/include/string.h \
+ C:/msys64/ucrt64/include/sec_api/string_s.h \
+ C:/msys64/ucrt64/include/c++/13.2.0/map \
+ C:/msys64/ucrt64/include/c++/13.2.0/bits/stl_tree.h \
+ C:/msys64/ucrt64/include/c++/13.2.0/ext/aligned_buffer.h \
+ C:/msys64/ucrt64/include/c++/13.2.0/bits/node_handle.h \
+ C:/msys64/ucrt64/include/c++/13.2.0/bits/stl_map.h \
+ C:/msys64/ucrt64/include/c++/13.2.0/bits/stl_multimap.h \
+ C:/msys64/ucrt64/include/c++/13.2.0/bits/erase_if.h \
+ C:/msys64/ucrt64/include/c++/13.2.0/optional \
+ C:/msys64/ucrt64/include/c++/13.2.0/bits/enable_special_members.h

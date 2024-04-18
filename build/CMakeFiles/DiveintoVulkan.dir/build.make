@@ -52,10 +52,10 @@ RM = "C:\Program Files\CMake\bin\cmake.exe" -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = C:\Myroot\vcprojects\VulcanProjects
+CMAKE_SOURCE_DIR = C:\Myroot\vcprojects\KutoryVulkanTrip
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = C:\Myroot\vcprojects\VulcanProjects\build
+CMAKE_BINARY_DIR = C:\Myroot\vcprojects\KutoryVulkanTrip\build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/DiveintoVulkan.dir/depend.make
@@ -70,18 +70,18 @@ include CMakeFiles/DiveintoVulkan.dir/flags.make
 
 CMakeFiles/DiveintoVulkan.dir/src/main.cpp.obj: CMakeFiles/DiveintoVulkan.dir/flags.make
 CMakeFiles/DiveintoVulkan.dir/src/main.cpp.obj: CMakeFiles/DiveintoVulkan.dir/includes_CXX.rsp
-CMakeFiles/DiveintoVulkan.dir/src/main.cpp.obj: C:/Myroot/vcprojects/VulcanProjects/src/main.cpp
+CMakeFiles/DiveintoVulkan.dir/src/main.cpp.obj: C:/Myroot/vcprojects/KutoryVulkanTrip/src/main.cpp
 CMakeFiles/DiveintoVulkan.dir/src/main.cpp.obj: CMakeFiles/DiveintoVulkan.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Myroot\vcprojects\VulcanProjects\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/DiveintoVulkan.dir/src/main.cpp.obj"
-	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/DiveintoVulkan.dir/src/main.cpp.obj -MF CMakeFiles\DiveintoVulkan.dir\src\main.cpp.obj.d -o CMakeFiles\DiveintoVulkan.dir\src\main.cpp.obj -c C:\Myroot\vcprojects\VulcanProjects\src\main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Myroot\vcprojects\KutoryVulkanTrip\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/DiveintoVulkan.dir/src/main.cpp.obj"
+	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/DiveintoVulkan.dir/src/main.cpp.obj -MF CMakeFiles\DiveintoVulkan.dir\src\main.cpp.obj.d -o CMakeFiles\DiveintoVulkan.dir\src\main.cpp.obj -c C:\Myroot\vcprojects\KutoryVulkanTrip\src\main.cpp
 
 CMakeFiles/DiveintoVulkan.dir/src/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/DiveintoVulkan.dir/src/main.cpp.i"
-	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Myroot\vcprojects\VulcanProjects\src\main.cpp > CMakeFiles\DiveintoVulkan.dir\src\main.cpp.i
+	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Myroot\vcprojects\KutoryVulkanTrip\src\main.cpp > CMakeFiles\DiveintoVulkan.dir\src\main.cpp.i
 
 CMakeFiles/DiveintoVulkan.dir/src/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/DiveintoVulkan.dir/src/main.cpp.s"
-	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Myroot\vcprojects\VulcanProjects\src\main.cpp -o CMakeFiles\DiveintoVulkan.dir\src\main.cpp.s
+	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Myroot\vcprojects\KutoryVulkanTrip\src\main.cpp -o CMakeFiles\DiveintoVulkan.dir\src\main.cpp.s
 
 # Object files for target DiveintoVulkan
 DiveintoVulkan_OBJECTS = \
@@ -93,13 +93,13 @@ DiveintoVulkan_EXTERNAL_OBJECTS =
 DiveintoVulkan.exe: CMakeFiles/DiveintoVulkan.dir/src/main.cpp.obj
 DiveintoVulkan.exe: CMakeFiles/DiveintoVulkan.dir/build.make
 DiveintoVulkan.exe: C:/VulkanSDK/1.3.275.0/Lib/vulkan-1.lib
-DiveintoVulkan.exe: C:/Program\ Files/Vcpkg/vcpkg/installed/x64-windows/debug/lib/glfw3dll.lib
+DiveintoVulkan.exe: C:/Program\ Files/Vcpkg/vcpkg/packages/glfw3_x64-windows/debug/lib/glfw3dll.lib
 DiveintoVulkan.exe: CMakeFiles/DiveintoVulkan.dir/linkLibs.rsp
 DiveintoVulkan.exe: CMakeFiles/DiveintoVulkan.dir/objects1.rsp
 DiveintoVulkan.exe: CMakeFiles/DiveintoVulkan.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=C:\Myroot\vcprojects\VulcanProjects\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable DiveintoVulkan.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=C:\Myroot\vcprojects\KutoryVulkanTrip\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable DiveintoVulkan.exe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\DiveintoVulkan.dir\link.txt --verbose=$(VERBOSE)
-	C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -noprofile -executionpolicy Bypass -file "C:/Program Files/Vcpkg/vcpkg/scripts/buildsystems/msbuild/applocal.ps1" -targetBinary C:/Myroot/vcprojects/VulcanProjects/build/DiveintoVulkan.exe -installedDir "C:/Program Files/Vcpkg/vcpkg/installed//debug/bin" -OutVariable out
+	C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -noprofile -executionpolicy Bypass -file "C:/Program Files/Vcpkg/vcpkg/scripts/buildsystems/msbuild/applocal.ps1" -targetBinary C:/Myroot/vcprojects/KutoryVulkanTrip/build/DiveintoVulkan.exe -installedDir "C:/Program Files/Vcpkg/vcpkg/installed//debug/bin" -OutVariable out
 
 # Rule to build all files generated by this target.
 CMakeFiles/DiveintoVulkan.dir/build: DiveintoVulkan.exe
@@ -110,6 +110,6 @@ CMakeFiles/DiveintoVulkan.dir/clean:
 .PHONY : CMakeFiles/DiveintoVulkan.dir/clean
 
 CMakeFiles/DiveintoVulkan.dir/depend:
-	$(CMAKE_COMMAND) -E cmake_depends "MinGW Makefiles" C:\Myroot\vcprojects\VulcanProjects C:\Myroot\vcprojects\VulcanProjects C:\Myroot\vcprojects\VulcanProjects\build C:\Myroot\vcprojects\VulcanProjects\build C:\Myroot\vcprojects\VulcanProjects\build\CMakeFiles\DiveintoVulkan.dir\DependInfo.cmake "--color=$(COLOR)"
+	$(CMAKE_COMMAND) -E cmake_depends "MinGW Makefiles" C:\Myroot\vcprojects\KutoryVulkanTrip C:\Myroot\vcprojects\KutoryVulkanTrip C:\Myroot\vcprojects\KutoryVulkanTrip\build C:\Myroot\vcprojects\KutoryVulkanTrip\build C:\Myroot\vcprojects\KutoryVulkanTrip\build\CMakeFiles\DiveintoVulkan.dir\DependInfo.cmake "--color=$(COLOR)"
 .PHONY : CMakeFiles/DiveintoVulkan.dir/depend
 

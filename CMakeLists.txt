@@ -10,7 +10,6 @@ find_package(Vulkan REQUIRED)
 
 file(GLOB SOURCE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 add_executable(${PROJECT_NAME} ${SOURCE_PATH})
-
 target_include_directories (${PROJECT_NAME} PUBLIC
   ${PROJECT_BINARY_DIR}
   ${GLFW_INCLUDE_DIRS}
