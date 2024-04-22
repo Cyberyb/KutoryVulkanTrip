@@ -15,7 +15,7 @@ const uint32_t HEIGHT = 600;
 const std::vector<const char *> validationLayers = {
     "VK_LAYER_KHRONOS_validation"};
 
-//validation层仅在Debug模式下作用
+// validation层仅在Debug模式下作用
 #ifdef NDEBUG
 const bool enableValidationLayers = false;
 #else
@@ -59,13 +59,19 @@ private:
     GLFWwindow *window;
     VkInstance instance;
     VkDebugUtilsMessengerEXT debugMessenger;
+    // 将显卡存储到VkPhysicalDevice句柄中，且随着VkInstance的销毁而销毁
+    VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
+    VkDevice device;//LogicDevice
+    VkQueue graphicsQueue;//Queue(Graphics)
 
-    struct QueueFamilyIndices{
-        //std::optional为C++17标准引入的，可以通过.has_value()来判定是否赋值
-        //因为graphicsFamily为任何值都可能有效，甚至是0，如果使用uint32_t来做类型的话，无法判断是否有效
+    struct QueueFamilyIndices
+    {
+        // std::optional为C++17标准引入的，可以通过.has_value()来判定是否赋值
+        // 因为graphicsFamily为任何值都可能有效，甚至是0，如果使用uint32_t来做类型的话，无法判断是否有效
         std::optional<uint32_t> graphicsFamily;
 
-        bool isComplete(){
+        bool isComplete()
+        {
             return graphicsFamily.has_value();
         }
     };
@@ -119,7 +125,7 @@ private:
             createInfo.ppEnabledLayerNames = validationLayers.data();
 
             populateDebugMessengerCreateInfo(debugCreateInfo);
-            createInfo.pNext = (VkDebugUtilsMessengerCreateInfoEXT*) &debugCreateInfo;
+            createInfo.pNext = (VkDebugUtilsMessengerCreateInfoEXT *)&debugCreateInfo;
         }
         else
         {
@@ -228,9 +234,11 @@ private:
         createInstance();
         setupDebugMessenger();
         pickPhysicalDevice();
+        createLogicalDevice();
     }
 
-    void populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT &createInfo) {
+    void populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT &createInfo)
+    {
         createInfo = {};
         createInfo.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
         createInfo.messageSeverity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT;
@@ -253,110 +261,161 @@ private:
         }
     }
 
-    void pickPhysicalDevice() {
-        //将显卡存储到VkPhysicalDevice句柄中，且随着VkInstance的销毁而销毁
-        VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
-
+    void pickPhysicalDevice()
+    {
         uint32_t deviceCount = 0;
-        vkEnumeratePhysicalDevices(instance,&deviceCount,nullptr);
-        if(deviceCount == 0) {
+        vkEnumeratePhysicalDevices(instance, &deviceCount, nullptr);
+        if (deviceCount == 0)
+        {
             throw std::runtime_error("No GPUs with Vulkan support!");
         }
         std::vector<VkPhysicalDevice> devices(deviceCount);
-        vkEnumeratePhysicalDevices(instance,&deviceCount,devices.data());
+        vkEnumeratePhysicalDevices(instance, &deviceCount, devices.data());
 
-        //调用设备检查函数来检查GPUs的可用性
-        for (const auto& device: devices) {
-            if(isDeviceSuitable(device)){
-                //找第一个可以用的设备
+        // 调用设备检查函数来检查GPUs的可用性
+        for (const auto &device : devices)
+        {
+            if (isDeviceSuitable(device))
+            {
+                // 找第一个可以用的设备
                 physicalDevice = device;
                 break;
             }
         }
-        if(physicalDevice == VK_NULL_HANDLE){
+        if (physicalDevice == VK_NULL_HANDLE)
+        {
             throw std::runtime_error("No suitable GPU!");
         }
 
-        //使用ordered map来对候选设备进行自动排序
-        // std::multimap<int, VkPhysicalDevice> candidates;
-        // for(const auto& device : devices) {
-        //     int score = rateDeviceSuitability(device);
-        //     candidates.insert(std::make_pair(score, device));
-        // }
-        // if(candidates.rbegin()->first > 0){
-        //     physicalDevice = candidates.rbegin()->second;
-        // }else {
-        //     throw std::runtime_error("No suitable GPU!");
-        // }
-
+        // 使用ordered map来对候选设备进行自动排序
+        //  std::multimap<int, VkPhysicalDevice> candidates;
+        //  for(const auto& device : devices) {
+        //      int score = rateDeviceSuitability(device);
+        //      candidates.insert(std::make_pair(score, device));
+        //  }
+        //  if(candidates.rbegin()->first > 0){
+        //      physicalDevice = candidates.rbegin()->second;
+        //  }else {
+        //      throw std::runtime_error("No suitable GPU!");
+        //  }
     }
 
-    //检查当前的设备能否支持Vulkan的功能
-    bool isDeviceSuitable(VkPhysicalDevice device) {
-        //查询基本设备属性（名称、类型、Vulkan支持版本等）
+    // 检查当前的设备能否支持Vulkan的功能
+    bool isDeviceSuitable(VkPhysicalDevice device)
+    {
+        // 查询基本设备属性（名称、类型、Vulkan支持版本等）
         VkPhysicalDeviceProperties deviceProperties;
         vkGetPhysicalDeviceProperties(device, &deviceProperties);
 
-        //查询设备特性（纹理压缩、64位浮点数、Multiviewport渲染等可选功能）
+        // 查询设备特性（纹理压缩、64位浮点数、Multiviewport渲染等可选功能）
         VkPhysicalDeviceFeatures deviceFeatures;
-        vkGetPhysicalDeviceFeatures(device,&deviceFeatures);
+        vkGetPhysicalDeviceFeatures(device, &deviceFeatures);
 
-        //以下代码示例为选择仅适用与支持几何着色器显卡
-        //return deviceProperties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU &&
-            //deviceFeatures.geometryShader;
+        // 以下代码示例为选择仅适用与支持几何着色器显卡
+        // return deviceProperties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU &&
+        // deviceFeatures.geometryShader;
 
         QueueFamilyIndices indices = findQueueFamilies(device);
         return indices.isComplete();
     }
 
-    //给物理设备打分以选取最适合的设备
+    // 给物理设备打分以选取最适合的设备
     int rateDeviceSuitability(VkPhysicalDevice device)
     {
         int score = 0;
 
-        //查询基本设备属性（名称、类型、Vulkan支持版本等）
+        // 查询基本设备属性（名称、类型、Vulkan支持版本等）
         VkPhysicalDeviceProperties deviceProperties;
         vkGetPhysicalDeviceProperties(device, &deviceProperties);
-        //查询设备特性（纹理压缩、64位浮点数、Multiviewport渲染等可选功能）
+        // 查询设备特性（纹理压缩、64位浮点数、Multiviewport渲染等可选功能）
         VkPhysicalDeviceFeatures deviceFeatures;
-        vkGetPhysicalDeviceFeatures(device,&deviceFeatures);
+        vkGetPhysicalDeviceFeatures(device, &deviceFeatures);
 
-        //Discrete GPUs（独立显卡）拥有更高的性能，+1000分！
-        if (deviceProperties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU) {
+        // Discrete GPUs（独立显卡）拥有更高的性能，+1000分！
+        if (deviceProperties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU)
+        {
             score += 1000;
         }
 
-        //Textures size作为打分重要依据
+        // Textures size作为打分重要依据
         score += deviceProperties.limits.maxImageDimension2D;
 
-        //一票否决项，不支持几何着色器的GPU直接0分！
-        if(!deviceFeatures.geometryShader){
+        // 一票否决项，不支持几何着色器的GPU直接0分！
+        if (!deviceFeatures.geometryShader)
+        {
             return 0;
         }
 
         return score;
     }
 
-    //检查设备支持哪些Queue families，以及其中哪一个支持我们需要使用的命令
-    QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device){
+    // 检查设备支持哪些Queue families，以及其中哪一个支持我们需要使用的命令
+    QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device)
+    {
         QueueFamilyIndices indices;
         // Logic to find graphics queue family
         uint32_t queueFamilyCount = 0;
-        vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount,nullptr);
+        vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, nullptr);
         std::vector<VkQueueFamilyProperties> queueFamilies(queueFamilyCount);
-        vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount,queueFamilies.data());
+        vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, queueFamilies.data());
 
         int i = 0;
-        for (const auto& queueFamily : queueFamilies) {
-            if (queueFamily.queueFlags & VK_QUEUE_GRAPHICS_BIT) {
-            indices.graphicsFamily = i;
+        for (const auto &queueFamily : queueFamilies)
+        {
+            if (queueFamily.queueFlags & VK_QUEUE_GRAPHICS_BIT)
+            {
+                indices.graphicsFamily = i;
             }
-            if(indices.isComplete()){
+            if (indices.isComplete())
+            {
                 break;
             }
             i++;
         }
         return indices;
+    }
+
+    void createLogicalDevice()
+    {
+        QueueFamilyIndices indices = findQueueFamilies(physicalDevice);
+
+        // 描述了单个Queue family中我们需要的队列数
+        VkDeviceQueueCreateInfo queueCreateInfo{};
+        queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
+        queueCreateInfo.queueFamilyIndex = indices.graphicsFamily.value();
+        queueCreateInfo.queueCount = 1;
+        // 0.0-1.0分配队列优先级
+        float queuePriority = 1.0f;
+        queueCreateInfo.pQueuePriorities = &queuePriority;
+
+        // 指定将使用的Device features
+        VkPhysicalDeviceFeatures deviceFeatures{};
+
+        // 使用前两个结构以及其他信息来填充VkDeviceCreateInfo主体结构以创建逻辑设备
+        VkDeviceCreateInfo createInfo{};
+        createInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
+        //Queue
+        createInfo.pQueueCreateInfos = &queueCreateInfo;
+        createInfo.queueCreateInfoCount = 1;
+        //Features
+        createInfo.pEnabledFeatures = &deviceFeatures;
+        //Extensions
+        createInfo.enabledExtensionCount = 0;
+        //Layers(.enabledLayerCount & .ppEnabledLayerNames are Out of date in new Vulkan)
+        if (enableValidationLayers){
+            createInfo.enabledLayerCount = static_cast<uint32_t>(validationLayers.size());
+            createInfo.ppEnabledLayerNames = validationLayers.data();
+        }
+        else{
+            createInfo.enabledLayerCount = 0;
+        }
+
+        if (vkCreateDevice(physicalDevice, &createInfo, nullptr, &device) != VK_SUCCESS) {
+            throw std::runtime_error("failed to create logical device!");
+        }
+
+        //创建Queue handles。参数为逻辑设备、QueueFamily、队列索引、存储句柄的指针
+        vkGetDeviceQueue(device, indices.graphicsFamily.value(), 0, &graphicsQueue);
     }
 
     void mainLoop()
@@ -369,6 +428,9 @@ private:
 
     void cleanup()
     {
+        //销毁设备，销毁时设备队列也被隐式清理
+        vkDestroyDevice(device,nullptr);
+
         if (enableValidationLayers)
         {
             DestroyDebugUtilsMessengerEXT(instance, debugMessenger, nullptr);
