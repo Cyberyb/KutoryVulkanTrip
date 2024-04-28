@@ -74,7 +74,9 @@ CMakeFiles/DiveintoVulkan.dir/src/main.cpp.obj: C:/Myroot/vcprojects/KutoryVulka
   C:/msys64/ucrt64/include/c++/13.2.0/bits/stl_iterator_base_types.h \
   C:/msys64/ucrt64/include/c++/13.2.0/bits/stl_map.h \
   C:/msys64/ucrt64/include/c++/13.2.0/bits/stl_multimap.h \
+  C:/msys64/ucrt64/include/c++/13.2.0/bits/stl_multiset.h \
   C:/msys64/ucrt64/include/c++/13.2.0/bits/stl_pair.h \
+  C:/msys64/ucrt64/include/c++/13.2.0/bits/stl_set.h \
   C:/msys64/ucrt64/include/c++/13.2.0/bits/stl_tree.h \
   C:/msys64/ucrt64/include/c++/13.2.0/bits/stl_uninitialized.h \
   C:/msys64/ucrt64/include/c++/13.2.0/bits/stl_vector.h \
@@ -114,6 +116,7 @@ CMakeFiles/DiveintoVulkan.dir/src/main.cpp.obj: C:/Myroot/vcprojects/KutoryVulka
   C:/msys64/ucrt64/include/c++/13.2.0/optional \
   C:/msys64/ucrt64/include/c++/13.2.0/ostream \
   C:/msys64/ucrt64/include/c++/13.2.0/pstl/pstl_config.h \
+  C:/msys64/ucrt64/include/c++/13.2.0/set \
   C:/msys64/ucrt64/include/c++/13.2.0/stdexcept \
   C:/msys64/ucrt64/include/c++/13.2.0/stdlib.h \
   C:/msys64/ucrt64/include/c++/13.2.0/streambuf \
@@ -224,6 +227,8 @@ C:/msys64/ucrt64/include/c++/13.2.0/bits/exception_ptr.h:
 C:/msys64/ucrt64/include/c++/13.2.0/bits/stl_iterator_base_funcs.h:
 
 C:/VulkanSDK/1.3.275.0/Include/vulkan/vulkan.h:
+
+C:/msys64/ucrt64/include/c++/13.2.0/bits/stl_set.h:
 
 C:/VulkanSDK/1.3.275.0/Include/vulkan/vulkan_core.h:
 
@@ -343,6 +348,8 @@ C:/msys64/ucrt64/include/c++/13.2.0/bits/stl_map.h:
 
 C:/msys64/ucrt64/include/c++/13.2.0/bits/stl_multimap.h:
 
+C:/msys64/ucrt64/include/c++/13.2.0/bits/stl_multiset.h:
+
 C:/msys64/ucrt64/include/c++/13.2.0/exception:
 
 C:/msys64/ucrt64/include/c++/13.2.0/bits/stl_pair.h:
@@ -428,6 +435,8 @@ C:/msys64/ucrt64/include/c++/13.2.0/optional:
 C:/msys64/ucrt64/include/c++/13.2.0/ostream:
 
 C:/msys64/ucrt64/include/c++/13.2.0/pstl/pstl_config.h:
+
+C:/msys64/ucrt64/include/c++/13.2.0/set:
 
 C:/msys64/ucrt64/include/c++/13.2.0/stdexcept:
 

@@ -7,6 +7,8 @@
 #include <cstring>
 #include <map>
 #include <optional>
+#include <set>
+#include <algorithm>
 
 const uint32_t WIDTH = 800;
 const uint32_t HEIGHT = 600;
@@ -14,6 +16,10 @@ const uint32_t HEIGHT = 600;
 // 这里存储了当前vulkan程序要启用的validation层
 const std::vector<const char *> validationLayers = {
     "VK_LAYER_KHRONOS_validation"};
+
+const std::vector<const char*> deviceExtensions = {
+    VK_KHR_SWAPCHAIN_EXTENSION_NAME
+};
 
 // validation层仅在Debug模式下作用
 #ifdef NDEBUG
@@ -60,21 +66,38 @@ private:
     VkInstance instance;
     VkDebugUtilsMessengerEXT debugMessenger;
     // 将显卡存储到VkPhysicalDevice句柄中，且随着VkInstance的销毁而销毁
+    VkSurfaceKHR surface;//创建Window surface
     VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
     VkDevice device;//LogicDevice
     VkQueue graphicsQueue;//Queue(Graphics)
+    VkQueue presentQueue;//Queue(Presentation)
 
     struct QueueFamilyIndices
     {
         // std::optional为C++17标准引入的，可以通过.has_value()来判定是否赋值
         // 因为graphicsFamily为任何值都可能有效，甚至是0，如果使用uint32_t来做类型的话，无法判断是否有效
         std::optional<uint32_t> graphicsFamily;
+        std::optional<uint32_t> presentFamily;
 
         bool isComplete()
         {
-            return graphicsFamily.has_value();
+            return graphicsFamily.has_value() && presentFamily.has_value();
         }
     };
+
+    struct SwapChainSupportDetails
+    {
+        //检查SwapChain是否可用是不够的，还需要检查一下三种属性
+        /*
+        1.Basic surface capabilities(min/max number of images in swap chain, min/max width and height of images)
+        2.Surface formats(pixel format, color space)
+        3.Available presentation modes
+        */
+        VkSurfaceCapabilitiesKHR capabilities;
+        std::vector<VkSurfaceFormatKHR> formats;
+        std::vector<VkPresentModeKHR> presentModes;
+    };
+    
 
     void initWindow()
     {
@@ -203,7 +226,7 @@ private:
         vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, vkextensions.data());
 
         // Output extensions
-        std::cout << "Here are all available extensions:\n";
+        std::cout << "Here are all available instance extensions:\n";
         for (const auto &extension : vkextensions)
         {
             std::cout << '\t' << extension.extensionName << '\n';
@@ -233,6 +256,7 @@ private:
         // 第一步，创建Instance
         createInstance();
         setupDebugMessenger();
+        createSurface();
         pickPhysicalDevice();
         createLogicalDevice();
     }
@@ -257,7 +281,35 @@ private:
 
         if (CreateDebugUtilsMessengerEXT(instance, &createInfo, nullptr, &debugMessenger) != VK_SUCCESS)
         {
-            throw std::runtime_error("failed to set up debug messenger!");
+            throw std::runtime_error("Failed to set up debug messenger!");
+        }
+    }
+
+    void createSurface()
+    {
+        //Use platform specific extension
+        /*include information:
+        #define VK_USE_PLATFORM_WIN32_KHR
+        #define GLFW_INCLUDE_VULKAN
+        #include <GLFW/glfw3.h>
+        #define GLFW_EXPOSE_NATIVE_WIN32
+        #include <GLFW/glfw3native.h>
+
+        VkWin32SurfaceCreateInfoKHR createInfo{};
+        createInfo.sType = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
+        createInfo.hwnd = glfwGetWin32Window(window);
+        createInfo.hinstance = GetModuleHandle(nullptr);
+
+        if (vkCreateWin32SurfaceKHR(instance, &createInfo, nullptr, &surface) != VK_SUCCESS) {
+            throw std::runtime_error("failed to create window surface!");
+        }
+
+        */
+
+
+        //使用GLFW
+        if(glfwCreateWindowSurface(instance, window,nullptr,&surface)!= VK_SUCCESS){
+            throw std::runtime_error("Failed to create window surface!");
         }
     }
 
@@ -316,7 +368,40 @@ private:
         // deviceFeatures.geometryShader;
 
         QueueFamilyIndices indices = findQueueFamilies(device);
-        return indices.isComplete();
+
+        bool extensionSupported = checkDeviceExtensionSupport(device);
+
+        //验证SwapChain支持是否足够
+        bool swapChainAdequate = false;
+        //先验证extension可用
+        if(extensionSupported){
+            SwapChainSupportDetails swapChainSupport = querySwapChainSupport(device);
+            //本例只需要至少一种支持的Format和一种支持的PresentMode即可
+            swapChainAdequate = !swapChainSupport.formats.empty() && !swapChainSupport.presentModes.empty();
+        }
+        
+        return indices.isComplete() && extensionSupported && swapChainAdequate ;
+    }
+
+    //Additional check 检查设备的Swap chain extensions
+    bool checkDeviceExtensionSupport(VkPhysicalDevice device){
+        uint32_t extensionCount;
+        vkEnumerateDeviceExtensionProperties(device,nullptr,&extensionCount,nullptr);
+
+        std::vector<VkExtensionProperties> availableExtensions(extensionCount);
+        vkEnumerateDeviceExtensionProperties(device,nullptr,&extensionCount,availableExtensions.data());
+        
+        std::set<std::string> requiredExtensions(deviceExtensions.begin(),deviceExtensions.end());
+
+        std::cout << '\n'
+                  << "Here are all avalilable device extensions:" << '\n';
+        for(const auto& extension : availableExtensions){
+            // 输出所有的availableExtensionsextensionName
+            std::cout << '\t' << extension.extensionName << '\n';
+            requiredExtensions.erase(extension.extensionName);
+        }
+        
+        return requiredExtensions.empty();
     }
 
     // 给物理设备打分以选取最适合的设备
@@ -366,6 +451,13 @@ private:
             {
                 indices.graphicsFamily = i;
             }
+
+            VkBool32 presentSupport = false;
+            vkGetPhysicalDeviceSurfaceSupportKHR(device, i ,surface, &presentSupport);
+            if (presentSupport)
+            {
+                indices.presentFamily = i;
+            }
             if (indices.isComplete())
             {
                 break;
@@ -375,19 +467,114 @@ private:
         return indices;
     }
 
+    //检查SwapChain的各项属性
+    SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice device) {
+        SwapChainSupportDetails details;
+
+        //All of the support querying functions have these two as first parameters
+        //VkPhysicalDevice and VkSurfaceKHR
+        //Get Capabilities
+        vkGetPhysicalDeviceSurfaceCapabilitiesKHR(device, surface, &details.capabilities);
+        
+        //Get supported surface formats
+        uint32_t formatCount;
+        vkGetPhysicalDeviceSurfaceFormatsKHR(device,surface,&formatCount,nullptr);
+        if(formatCount!=0){
+            details.formats.resize(formatCount);
+            vkGetPhysicalDeviceSurfaceFormatsKHR(device,surface,&formatCount,details.formats.data());
+        }
+
+        //Get present modes
+        uint32_t presentModeCount;
+        vkGetPhysicalDeviceSurfacePresentModesKHR(device, surface, &presentModeCount,nullptr);
+        if(presentModeCount != 0) {
+            details.presentModes.resize(presentModeCount);
+            vkGetPhysicalDeviceSurfacePresentModesKHR(device, surface, &presentModeCount, details.presentModes.data());
+        }
+
+        return details;
+    }
+
+    //Find the right settings for the best possible swapchain
+    /*3 settings:
+    1.Surface format(color depth)
+    2.Presentation mode(conditions for "swapping" images to the screen)
+    3.Swap extent(resolution of images in swap chain)
+    */
+
+   //SurfaceFormat
+    VkSurfaceFormatKHR chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats)
+    {
+        //指定颜色位深格式、SRGB模式
+        for(const auto& availableFormat : availableFormats){
+            if (availableFormat.format == VK_FORMAT_B8G8R8A8_SRGB && availableFormat.colorSpace == VK_COLOR_SPACE_SRGB_NONLINEAR_KHR){
+                return availableFormat;
+            }
+        }
+        return availableFormats[0];
+    }
+
+    //Prsentation Mode
+    /*
+    VK_PRESENT_MODE_IMMEDIATE_KHR 立即传输
+    VK_PRESENT_MODE_FIFO_KHR 队列先进先出，队满等待，垂直同步
+    VK_PRESENT_MODE_FIFO_RELAXED_KHR 程序延迟且队列在最后一个vertical blank时不同，不等待立即传输
+    VK_PRESENT_MODE_MAILBOX_KHR 队满直接替换新图像，三重缓冲，避免撕裂同时低延迟
+    */
+    VkPresentModeKHR chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes)
+    {
+        for(const auto& availablePresentMode : availablePresentModes){
+            if(availablePresentMode == VK_PRESENT_MODE_MAILBOX_KHR){
+                return availablePresentMode;
+            }
+        }
+
+        return VK_PRESENT_MODE_FIFO_KHR;
+    }
+
+    VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities) 
+    {
+        //通过currentExtent来确认当前分辨率
+        if (capabilities.currentExtent.width != std::numeric_limits<uint32_t>::max()) {
+            return capabilities.currentExtent;
+        } else {
+        //一些窗口管理器在currentExtent值为uint32_t的最大值时会选择minImageExtent与maxImageExtent之间最匹配的窗口分辨率
+            int width, height;
+            glfwGetFramebufferSize(window, &width, &height);
+
+            VkExtent2D actualExtent = {
+                static_cast<uint32_t>(width),
+                static_cast<uint32_t>(height)
+            };
+
+            actualExtent.width = std::clamp(actualExtent.width, capabilities.minImageExtent.width, capabilities.maxImageExtent.width);
+            actualExtent.height = std::clamp(actualExtent.height, capabilities.minImageExtent.height, capabilities.maxImageExtent.height);
+
+            return actualExtent;
+        }
+    }
+
+
     void createLogicalDevice()
     {
         QueueFamilyIndices indices = findQueueFamilies(physicalDevice);
 
-        // 描述了单个Queue family中我们需要的队列数
-        VkDeviceQueueCreateInfo queueCreateInfo{};
-        queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
-        queueCreateInfo.queueFamilyIndex = indices.graphicsFamily.value();
-        queueCreateInfo.queueCount = 1;
+        std::vector<VkDeviceQueueCreateInfo> queueCreateInfos;
+        std::set<uint32_t> uniqueQueueFamilies = {indices.graphicsFamily.value(),indices.presentFamily.value()};
+        
         // 0.0-1.0分配队列优先级
         float queuePriority = 1.0f;
-        queueCreateInfo.pQueuePriorities = &queuePriority;
-
+        for(uint32_t queueFamily : uniqueQueueFamilies){
+            // 描述了单个Queue family中我们需要的队列数
+            VkDeviceQueueCreateInfo queueCreateInfo{};
+            queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
+            queueCreateInfo.queueFamilyIndex = queueFamily;
+            queueCreateInfo.queueCount = 1;
+            queueCreateInfo.pQueuePriorities = &queuePriority;
+            queueCreateInfos.push_back(queueCreateInfo);
+        }
+        
+        
         // 指定将使用的Device features
         VkPhysicalDeviceFeatures deviceFeatures{};
 
@@ -395,12 +582,13 @@ private:
         VkDeviceCreateInfo createInfo{};
         createInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
         //Queue
-        createInfo.pQueueCreateInfos = &queueCreateInfo;
-        createInfo.queueCreateInfoCount = 1;
+        createInfo.pQueueCreateInfos = queueCreateInfos.data();
+        createInfo.queueCreateInfoCount = static_cast<uint32_t>(queueCreateInfos.size());
         //Features
         createInfo.pEnabledFeatures = &deviceFeatures;
         //Extensions
-        createInfo.enabledExtensionCount = 0;
+        createInfo.enabledExtensionCount = static_cast<uint32_t>(deviceExtensions.size());
+        createInfo.ppEnabledExtensionNames = deviceExtensions.data();
         //Layers(.enabledLayerCount & .ppEnabledLayerNames are Out of date in new Vulkan)
         if (enableValidationLayers){
             createInfo.enabledLayerCount = static_cast<uint32_t>(validationLayers.size());
@@ -410,12 +598,14 @@ private:
             createInfo.enabledLayerCount = 0;
         }
 
+
         if (vkCreateDevice(physicalDevice, &createInfo, nullptr, &device) != VK_SUCCESS) {
             throw std::runtime_error("failed to create logical device!");
         }
 
         //创建Queue handles。参数为逻辑设备、QueueFamily、队列索引、存储句柄的指针
         vkGetDeviceQueue(device, indices.graphicsFamily.value(), 0, &graphicsQueue);
+        vkGetDeviceQueue(device, indices.presentFamily.value(),0,&presentQueue);
     }
 
     void mainLoop()
@@ -436,6 +626,9 @@ private:
             DestroyDebugUtilsMessengerEXT(instance, debugMessenger, nullptr);
         }
         // Destroyed
+        //先销毁Surface
+        vkDestroySurfaceKHR(instance, surface, nullptr);
+        //再销毁Innstance
         vkDestroyInstance(instance, nullptr);
 
         glfwDestroyWindow(window);
