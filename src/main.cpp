@@ -8,6 +8,7 @@
 #include <map>
 #include <optional>
 #include <set>
+#include <limits>
 #include <algorithm>
 
 const uint32_t WIDTH = 800;
@@ -62,6 +63,7 @@ public:
     }
 
 private:
+    //类成员
     GLFWwindow *window;
     VkInstance instance;
     VkDebugUtilsMessengerEXT debugMessenger;
@@ -71,6 +73,11 @@ private:
     VkDevice device;//LogicDevice
     VkQueue graphicsQueue;//Queue(Graphics)
     VkQueue presentQueue;//Queue(Presentation)
+    //Store the VkSwapchainKHR;
+    VkSwapchainKHR swapChain;
+    std::vector<VkImage> swapChainImages;
+    VkFormat swapChainImageFormat;
+    VkExtent2D swapChainExtent;
 
     struct QueueFamilyIndices
     {
@@ -113,7 +120,7 @@ private:
         // 检查Layer层的支持情况
         if (enableValidationLayers && !checkValidationLayerSupport())
         {
-            throw std::runtime_error("Validation layers requested, but not available!");
+            throw std::runtime_error("=====Validation layers requested, but not available!=====");
         }
 
         // 创建实例
@@ -161,7 +168,7 @@ private:
         // 几乎所有的Vulkan函数都返回一个类型VkResult，要么是VK_SUCCESS要么是错误代码的值
         if (vkCreateInstance(&createInfo, nullptr, &instance) != VK_SUCCESS)
         {
-            throw std::runtime_error("Holy Shit!!! Faild to create instance!");
+            throw std::runtime_error("=====Faild to create instance!=====");
         }
     }
 
@@ -259,6 +266,7 @@ private:
         createSurface();
         pickPhysicalDevice();
         createLogicalDevice();
+        createSwapChain();
     }
 
     void populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT &createInfo)
@@ -281,7 +289,7 @@ private:
 
         if (CreateDebugUtilsMessengerEXT(instance, &createInfo, nullptr, &debugMessenger) != VK_SUCCESS)
         {
-            throw std::runtime_error("Failed to set up debug messenger!");
+            throw std::runtime_error("=====Failed to set up debug messenger!=====");
         }
     }
 
@@ -309,7 +317,7 @@ private:
 
         //使用GLFW
         if(glfwCreateWindowSurface(instance, window,nullptr,&surface)!= VK_SUCCESS){
-            throw std::runtime_error("Failed to create window surface!");
+            throw std::runtime_error("=====Failed to create window surface!=====");
         }
     }
 
@@ -319,7 +327,7 @@ private:
         vkEnumeratePhysicalDevices(instance, &deviceCount, nullptr);
         if (deviceCount == 0)
         {
-            throw std::runtime_error("No GPUs with Vulkan support!");
+            throw std::runtime_error("=====No GPUs with Vulkan support!=====");
         }
         std::vector<VkPhysicalDevice> devices(deviceCount);
         vkEnumeratePhysicalDevices(instance, &deviceCount, devices.data());
@@ -336,7 +344,7 @@ private:
         }
         if (physicalDevice == VK_NULL_HANDLE)
         {
-            throw std::runtime_error("No suitable GPU!");
+            throw std::runtime_error("=====No suitable GPU!=====");
         }
 
         // 使用ordered map来对候选设备进行自动排序
@@ -600,12 +608,83 @@ private:
 
 
         if (vkCreateDevice(physicalDevice, &createInfo, nullptr, &device) != VK_SUCCESS) {
-            throw std::runtime_error("failed to create logical device!");
+            throw std::runtime_error("=====Failed to create logical device!=====");
         }
 
         //创建Queue handles。参数为逻辑设备、QueueFamily、队列索引、存储句柄的指针
         vkGetDeviceQueue(device, indices.graphicsFamily.value(), 0, &graphicsQueue);
         vkGetDeviceQueue(device, indices.presentFamily.value(),0,&presentQueue);
+    }
+
+    //Behind create logic device
+    void createSwapChain()
+    {
+        SwapChainSupportDetails swapChainSupport = querySwapChainSupport(physicalDevice);
+
+        VkSurfaceFormatKHR surfaceFormat = chooseSwapSurfaceFormat(swapChainSupport.formats);
+        VkPresentModeKHR presentMode = chooseSwapPresentMode(swapChainSupport.presentModes);
+        VkExtent2D extent = chooseSwapExtent(swapChainSupport.capabilities);
+    
+        //决定在SwapChain中拥有多少个图像
+        uint32_t imageCount = swapChainSupport.capabilities.minImageCount + 1;
+        //不要超过最大值，0表示没有最大值
+        if(swapChainSupport.capabilities.maxImageCount > 0 && imageCount > swapChainSupport.capabilities.maxImageCount){
+            imageCount = swapChainSupport.capabilities.maxImageCount;
+        }
+
+        //Create swap chain,fill in a struct
+        VkSwapchainCreateInfoKHR createInfo{};
+        createInfo.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
+        createInfo.surface = surface;
+        createInfo.minImageCount = imageCount;
+        createInfo.imageFormat = surfaceFormat.format;
+        createInfo.imageColorSpace = surfaceFormat.colorSpace;
+        createInfo.imageExtent = extent;
+        //Unless 3D,always 1
+        createInfo.imageArrayLayers = 1;
+        //使用swap chain中的图像用作什么操作，下为直接渲染，用作color attachment
+        createInfo.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
+    
+        QueueFamilyIndices indices = findQueueFamilies(physicalDevice);
+        uint32_t queueFamilyIndices[] = {indices.graphicsFamily.value(), indices.presentFamily.value()};
+
+        //指定如何处理在多个queue families中使用swap chain image
+        if(indices.graphicsFamily != indices.presentFamily){
+            //image可以跨queue families使用，无需显式转移所有权
+            createInfo.imageSharingMode = VK_SHARING_MODE_CONCURRENT;
+            createInfo.queueFamilyIndexCount = 2;
+            createInfo.pQueueFamilyIndices = queueFamilyIndices;
+        }else{
+            //image一次由一个queue family所有，需要显示转移所有权才能在另外一个queue family中使用
+            //大多数硬件graphics queue family和presentation queue family相同
+            createInfo.imageSharingMode = VK_SHARING_MODE_EXCLUSIVE;
+            createInfo.queueFamilyIndexCount = 0;
+            createInfo.pQueueFamilyIndices = nullptr;
+        }
+
+        //对swap chain中的image做何种变换。（顺时针旋转90度或者水平翻转）
+        createInfo.preTransform = swapChainSupport.capabilities.currentTransform;
+        //compositeAlpha字段指定了是否使用A通道与窗口系统中的其他窗口混合，以下为忽略
+        createInfo.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
+
+        createInfo.presentMode = presentMode;
+        createInfo.clipped = VK_TRUE;
+        
+        createInfo.oldSwapchain = VK_NULL_HANDLE;
+
+        //Create swap chain
+        if(vkCreateSwapchainKHR(device, &createInfo,nullptr,&swapChain)!=VK_SUCCESS){
+            throw std::runtime_error("=====Failed to create swap chain!=====");
+        }
+
+        //Retrieve the handles
+        vkGetSwapchainImagesKHR(device, swapChain, &imageCount, nullptr);
+        swapChainImages.resize(imageCount);
+        vkGetSwapchainImagesKHR(device,swapChain,&imageCount,swapChainImages.data());
+    
+        //Store as member variables
+        swapChainImageFormat = surfaceFormat.format;
+        swapChainExtent = extent;
     }
 
     void mainLoop()
@@ -618,8 +697,11 @@ private:
 
     void cleanup()
     {
+        //在销毁设备之前清理Swap chain
+        vkDestroySwapchainKHR(device, swapChain, nullptr);
+
         //销毁设备，销毁时设备队列也被隐式清理
-        vkDestroyDevice(device,nullptr);
+        vkDestroyDevice(device, nullptr);
 
         if (enableValidationLayers)
         {

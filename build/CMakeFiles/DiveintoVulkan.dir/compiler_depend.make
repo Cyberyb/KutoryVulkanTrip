@@ -20,8 +20,10 @@ CMakeFiles/DiveintoVulkan.dir/src/main.cpp.obj: C:/Myroot/vcprojects/KutoryVulka
   C:/msys64/ucrt64/include/_mingw_secapi.h \
   C:/msys64/ucrt64/include/_mingw_stat64.h \
   C:/msys64/ucrt64/include/_timeval.h \
+  C:/msys64/ucrt64/include/c++/13.2.0/algorithm \
   C:/msys64/ucrt64/include/c++/13.2.0/backward/binders.h \
   C:/msys64/ucrt64/include/c++/13.2.0/bit \
+  C:/msys64/ucrt64/include/c++/13.2.0/bits/algorithmfwd.h \
   C:/msys64/ucrt64/include/c++/13.2.0/bits/alloc_traits.h \
   C:/msys64/ucrt64/include/c++/13.2.0/bits/allocator.h \
   C:/msys64/ucrt64/include/c++/13.2.0/bits/basic_ios.h \
@@ -65,10 +67,12 @@ CMakeFiles/DiveintoVulkan.dir/src/main.cpp.obj: C:/Myroot/vcprojects/KutoryVulka
   C:/msys64/ucrt64/include/c++/13.2.0/bits/refwrap.h \
   C:/msys64/ucrt64/include/c++/13.2.0/bits/requires_hosted.h \
   C:/msys64/ucrt64/include/c++/13.2.0/bits/std_abs.h \
+  C:/msys64/ucrt64/include/c++/13.2.0/bits/stl_algo.h \
   C:/msys64/ucrt64/include/c++/13.2.0/bits/stl_algobase.h \
   C:/msys64/ucrt64/include/c++/13.2.0/bits/stl_bvector.h \
   C:/msys64/ucrt64/include/c++/13.2.0/bits/stl_construct.h \
   C:/msys64/ucrt64/include/c++/13.2.0/bits/stl_function.h \
+  C:/msys64/ucrt64/include/c++/13.2.0/bits/stl_heap.h \
   C:/msys64/ucrt64/include/c++/13.2.0/bits/stl_iterator.h \
   C:/msys64/ucrt64/include/c++/13.2.0/bits/stl_iterator_base_funcs.h \
   C:/msys64/ucrt64/include/c++/13.2.0/bits/stl_iterator_base_types.h \
@@ -77,6 +81,7 @@ CMakeFiles/DiveintoVulkan.dir/src/main.cpp.obj: C:/Myroot/vcprojects/KutoryVulka
   C:/msys64/ucrt64/include/c++/13.2.0/bits/stl_multiset.h \
   C:/msys64/ucrt64/include/c++/13.2.0/bits/stl_pair.h \
   C:/msys64/ucrt64/include/c++/13.2.0/bits/stl_set.h \
+  C:/msys64/ucrt64/include/c++/13.2.0/bits/stl_tempbuf.h \
   C:/msys64/ucrt64/include/c++/13.2.0/bits/stl_tree.h \
   C:/msys64/ucrt64/include/c++/13.2.0/bits/stl_uninitialized.h \
   C:/msys64/ucrt64/include/c++/13.2.0/bits/stl_vector.h \
@@ -84,6 +89,7 @@ CMakeFiles/DiveintoVulkan.dir/src/main.cpp.obj: C:/Myroot/vcprojects/KutoryVulka
   C:/msys64/ucrt64/include/c++/13.2.0/bits/streambuf_iterator.h \
   C:/msys64/ucrt64/include/c++/13.2.0/bits/string_view.tcc \
   C:/msys64/ucrt64/include/c++/13.2.0/bits/stringfwd.h \
+  C:/msys64/ucrt64/include/c++/13.2.0/bits/uniform_int_dist.h \
   C:/msys64/ucrt64/include/c++/13.2.0/bits/uses_allocator.h \
   C:/msys64/ucrt64/include/c++/13.2.0/bits/uses_allocator_args.h \
   C:/msys64/ucrt64/include/c++/13.2.0/bits/utility.h \
@@ -111,10 +117,13 @@ CMakeFiles/DiveintoVulkan.dir/src/main.cpp.obj: C:/Myroot/vcprojects/KutoryVulka
   C:/msys64/ucrt64/include/c++/13.2.0/iosfwd \
   C:/msys64/ucrt64/include/c++/13.2.0/iostream \
   C:/msys64/ucrt64/include/c++/13.2.0/istream \
+  C:/msys64/ucrt64/include/c++/13.2.0/limits \
   C:/msys64/ucrt64/include/c++/13.2.0/map \
   C:/msys64/ucrt64/include/c++/13.2.0/new \
   C:/msys64/ucrt64/include/c++/13.2.0/optional \
   C:/msys64/ucrt64/include/c++/13.2.0/ostream \
+  C:/msys64/ucrt64/include/c++/13.2.0/pstl/execution_defs.h \
+  C:/msys64/ucrt64/include/c++/13.2.0/pstl/glue_algorithm_defs.h \
   C:/msys64/ucrt64/include/c++/13.2.0/pstl/pstl_config.h \
   C:/msys64/ucrt64/include/c++/13.2.0/set \
   C:/msys64/ucrt64/include/c++/13.2.0/stdexcept \
@@ -212,6 +221,8 @@ C:/msys64/ucrt64/include/c++/13.2.0/bits/basic_string.h:
 
 C:/VulkanSDK/1.3.275.0/Include/vk_video/vulkan_video_codec_h265std.h:
 
+C:/msys64/ucrt64/include/c++/13.2.0/algorithm:
+
 C:/msys64/ucrt64/include/c++/13.2.0/bits/refwrap.h:
 
 C:/VulkanSDK/1.3.275.0/Include/vk_video/vulkan_video_codec_h265std_decode.h:
@@ -230,11 +241,11 @@ C:/VulkanSDK/1.3.275.0/Include/vulkan/vulkan.h:
 
 C:/msys64/ucrt64/include/c++/13.2.0/bits/stl_set.h:
 
+C:/msys64/ucrt64/include/c++/13.2.0/bits/requires_hosted.h:
+
 C:/VulkanSDK/1.3.275.0/Include/vulkan/vulkan_core.h:
 
 C:/msys64/ucrt64/include/c++/13.2.0/bits/functional_hash.h:
-
-C:/msys64/ucrt64/include/c++/13.2.0/bits/requires_hosted.h:
 
 C:/msys64/ucrt64/include/c++/13.2.0/bits/cpp_type_traits.h:
 
@@ -272,6 +283,10 @@ C:/msys64/ucrt64/include/c++/13.2.0/bit:
 
 C:/msys64/ucrt64/include/c++/13.2.0/backward/binders.h:
 
+C:/msys64/ucrt64/include/c++/13.2.0/bits/charconv.h:
+
+C:/msys64/ucrt64/include/c++/13.2.0/bits/algorithmfwd.h:
+
 C:/msys64/ucrt64/include/c++/13.2.0/bits/alloc_traits.h:
 
 C:/msys64/ucrt64/include/c++/13.2.0/bits/allocator.h:
@@ -283,8 +298,6 @@ C:/msys64/ucrt64/include/c++/13.2.0/bits/basic_string.tcc:
 C:/msys64/ucrt64/include/c++/13.2.0/bits/hash_bytes.h:
 
 C:/msys64/ucrt64/include/c++/13.2.0/bits/char_traits.h:
-
-C:/msys64/ucrt64/include/c++/13.2.0/bits/charconv.h:
 
 C:/msys64/ucrt64/include/c++/13.2.0/cwchar:
 
@@ -314,6 +327,8 @@ C:/msys64/ucrt64/include/c++/13.2.0/bits/ostream.tcc:
 
 C:/msys64/ucrt64/include/c++/13.2.0/bits/locale_classes.tcc:
 
+C:/msys64/ucrt64/include/c++/13.2.0/bits/stl_algo.h:
+
 C:/msys64/ucrt64/include/c++/13.2.0/bits/locale_facets.tcc:
 
 C:/msys64/ucrt64/include/c++/13.2.0/bits/node_handle.h:
@@ -342,6 +357,8 @@ C:/msys64/ucrt64/include/c++/13.2.0/bits/stl_bvector.h:
 
 C:/msys64/ucrt64/include/c++/13.2.0/bits/stl_construct.h:
 
+C:/msys64/ucrt64/include/c++/13.2.0/bits/stl_heap.h:
+
 C:/msys64/ucrt64/include/c++/13.2.0/bits/stl_iterator.h:
 
 C:/msys64/ucrt64/include/c++/13.2.0/bits/stl_map.h:
@@ -353,6 +370,8 @@ C:/msys64/ucrt64/include/c++/13.2.0/bits/stl_multiset.h:
 C:/msys64/ucrt64/include/c++/13.2.0/exception:
 
 C:/msys64/ucrt64/include/c++/13.2.0/bits/stl_pair.h:
+
+C:/msys64/ucrt64/include/c++/13.2.0/bits/stl_tempbuf.h:
 
 C:/msys64/ucrt64/include/c++/13.2.0/bits/stl_tree.h:
 
@@ -367,6 +386,8 @@ C:/msys64/ucrt64/include/c++/13.2.0/bits/streambuf_iterator.h:
 C:/msys64/ucrt64/include/c++/13.2.0/bits/string_view.tcc:
 
 C:/msys64/ucrt64/include/c++/13.2.0/bits/stringfwd.h:
+
+C:/msys64/ucrt64/include/c++/13.2.0/bits/uniform_int_dist.h:
 
 C:/msys64/ucrt64/include/c++/13.2.0/bits/uses_allocator.h:
 
@@ -426,6 +447,8 @@ C:/msys64/ucrt64/include/c++/13.2.0/iostream:
 
 C:/msys64/ucrt64/include/c++/13.2.0/istream:
 
+C:/msys64/ucrt64/include/c++/13.2.0/limits:
+
 C:/msys64/ucrt64/include/c++/13.2.0/new:
 
 C:/msys64/ucrt64/include/c++/13.2.0/map:
@@ -433,6 +456,10 @@ C:/msys64/ucrt64/include/c++/13.2.0/map:
 C:/msys64/ucrt64/include/c++/13.2.0/optional:
 
 C:/msys64/ucrt64/include/c++/13.2.0/ostream:
+
+C:/msys64/ucrt64/include/c++/13.2.0/pstl/execution_defs.h:
+
+C:/msys64/ucrt64/include/c++/13.2.0/pstl/glue_algorithm_defs.h:
 
 C:/msys64/ucrt64/include/c++/13.2.0/pstl/pstl_config.h:
 
