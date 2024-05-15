@@ -1,8 +1,0 @@
-[
-{
-  "directory": "C:/Myroot/vcprojects/KutoryVulkanTrip/build",
-  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe -DGLFW_DLL @CMakeFiles/DiveintoVulkan.dir/includes_CXX.rsp -g -o CMakeFiles\\DiveintoVulkan.dir\\src\\main.cpp.obj -c C:\\Myroot\\vcprojects\\KutoryVulkanTrip\\src\\main.cpp",
-  "file": "C:/Myroot/vcprojects/KutoryVulkanTrip/src/main.cpp",
-  "output": "CMakeFiles/DiveintoVulkan.dir/src/main.cpp.obj"
-}
-]
