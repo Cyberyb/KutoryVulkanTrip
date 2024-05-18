@@ -99,6 +99,8 @@ private:
     VkFormat swapChainImageFormat;
     VkExtent2D swapChainExtent;
     std::vector<VkImageView> swapChainImageViews;//store the image views
+    //Pipeline layout
+    VkPipelineLayout pipelineLayout;
 
     struct QueueFamilyIndices
     {
@@ -775,6 +777,146 @@ private:
 
         VkPipelineShaderStageCreateInfo shaderStages[] = {vertShaderStageInfo,fragShaderStageInfo};
     
+        //Dynamic state
+        std::vector<VkDynamicState> dynamicStates = {
+            VK_DYNAMIC_STATE_VIEWPORT,
+            VK_DYNAMIC_STATE_SCISSOR
+        };
+
+        VkPipelineDynamicStateCreateInfo dynamicState{};
+        dynamicState.sType = VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO;
+        dynamicState.dynamicStateCount = static_cast<uint32_t>(dynamicStates.size());
+        dynamicState.pDynamicStates = dynamicStates.data();
+
+        //Vertex input 描述将传递给顶点着色器的顶点数据的格式
+        //Bindings & Attribute descriptions
+        VkPipelineVertexInputStateCreateInfo vertexInput{};
+        vertexInput.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
+        vertexInput.vertexBindingDescriptionCount = 0;
+        vertexInput.pVertexBindingDescriptions = nullptr;
+        vertexInput.vertexAttributeDescriptionCount = 0;
+        vertexInput.pVertexAttributeDescriptions = nullptr;
+
+        //Input assembly
+        VkPipelineInputAssemblyStateCreateInfo inputAssembly{};
+        inputAssembly.sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
+        inputAssembly.topology = VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
+        //True可使用0xFFFF或0xFFFFFFFF在STRIP拓扑中分解直线和三角形
+        inputAssembly.primitiveRestartEnable = VK_FALSE;
+
+        //Viewports and scissors
+        //viewports define the transformation from the image to the framebuffer
+        //scissor rectangles define in which regions pixels will actually be stored
+        VkViewport viewport{};
+        viewport.x = 0.0f;
+        viewport.y = 0.0f;
+        viewport.width = (float) swapChainExtent.width;
+        viewport.height = (float) swapChainExtent.height;
+        viewport.minDepth = 0.0f;
+        viewport.maxDepth = 1.0f;
+        VkRect2D scissor{};
+        scissor.offset = {0,0};
+        scissor.extent = swapChainExtent;
+
+        VkPipelineViewportStateCreateInfo viewportState{};
+        viewportState.sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
+        viewportState.viewportCount = 1;
+        viewportState.pViewports = &viewport;
+        viewportState.scissorCount = 1;
+        viewportState.pScissors = &scissor;
+
+        //Rasterizer
+        VkPipelineRasterizationStateCreateInfo rasterizer{};
+        rasterizer.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
+        //True则将超出近远平面的fragment clamp到他们之间，用在shadowmap
+        rasterizer.depthClampEnable = VK_FALSE;
+        //True则禁用framebuffer的任何输出，几何永远无法进入到光栅化阶段
+        rasterizer.rasterizerDiscardEnable = VK_FALSE;
+        //填充模式FILL, LINE, POINT
+        rasterizer.polygonMode = VK_POLYGON_MODE_FILL;\
+        //线条粗细
+        rasterizer.lineWidth = 1.0f;
+        //剔除类型BACK, FRONT, Both
+        rasterizer.cullMode = VK_CULL_MODE_BACK_BIT;
+        //顺时针为正面
+        rasterizer.frontFace = VK_FRONT_FACE_CLOCKWISE;
+        //更改深度偏移
+        rasterizer.depthBiasEnable = VK_FALSE;
+        rasterizer.depthBiasClamp = 0.0f;//Optional
+        rasterizer.depthBiasConstantFactor = 0.0f;//Optional
+        rasterizer.depthBiasSlopeFactor = 0.0f;//Optional
+
+        //Multisampling
+        VkPipelineMultisampleStateCreateInfo multisampling{};
+        multisampling.sType = VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO;
+        multisampling.sampleShadingEnable = VK_FALSE;
+        multisampling.rasterizationSamples = VK_SAMPLE_COUNT_1_BIT;
+        multisampling.minSampleShading = 1.0f;
+        multisampling.pSampleMask = nullptr;
+        multisampling.alphaToCoverageEnable = VK_FALSE;
+        multisampling.alphaToOneEnable = VK_FALSE;
+
+        //Depth and stencil testing
+        VkPipelineDepthStencilStateCreateInfo depthstencil{};
+
+        //Color blending
+        //Two ways:1.Mix 2.Combine using a bitwise operation
+        /*Mix:
+        if enable
+            finalColor.rgb = (srcColorBlendFactor * newColor.rgb) <colorBlendOp> (dstColorBlendFactor * oldColor.rgb);
+            finalColor.a = (srcAlphaBlendFactor * newColor.a) <alphaBlendOp> (dstAlphaBlendFactor * oldColor.a);
+        else
+            finalColor = newColor;
+        finalColor = finalColor & colorWriteMask;
+        */
+        VkPipelineColorBlendAttachmentState colorBlendAttachment{};
+        colorBlendAttachment.colorWriteMask = VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
+        colorBlendAttachment.blendEnable = VK_FALSE;
+        colorBlendAttachment.srcColorBlendFactor = VK_BLEND_FACTOR_ONE; // Optional
+        colorBlendAttachment.dstColorBlendFactor = VK_BLEND_FACTOR_ZERO; // Optional
+        colorBlendAttachment.colorBlendOp = VK_BLEND_OP_ADD; // Optional
+        colorBlendAttachment.srcAlphaBlendFactor = VK_BLEND_FACTOR_ONE; // Optional
+        colorBlendAttachment.dstAlphaBlendFactor = VK_BLEND_FACTOR_ZERO; // Optional
+        colorBlendAttachment.alphaBlendOp = VK_BLEND_OP_ADD; // Optional
+
+        /*Alpha blending
+        finalColor.rgb = newAlpha * newColor + (1 - newAlpha) * oldColor;
+        finalColor.a = newAlpha.a;
+        Vulkan Code:
+        colorBlendAttachment.blendEnable = VK_TRUE;
+        colorBlendAttachment.srcColorBlendFactor = VK_BLEND_FACTOR_SRC_ALPHA;
+        colorBlendAttachment.dstColorBlendFactor = VK_BLEND_FACTOR_ONE_MINUS_SRC_ALPHA;
+        colorBlendAttachment.colorBlendOp = VK_BLEND_OP_ADD;
+        colorBlendAttachment.srcAlphaBlendFactor = VK_BLEND_FACTOR_ONE;
+        colorBlendAttachment.dstAlphaBlendFactor = VK_BLEND_FACTOR_ZERO;
+        colorBlendAttachment.alphaBlendOp = VK_BLEND_OP_ADD;
+        */
+
+        //第二种方式Set blend constants
+        VkPipelineColorBlendStateCreateInfo colorBlending{};
+        colorBlending.sType = VK_STRUCTURE_TYPE_PIPELINE_COLOR_BLEND_STATE_CREATE_INFO;
+        colorBlending.logicOpEnable = VK_FALSE;
+        colorBlending.logicOp = VK_LOGIC_OP_COPY; // Optional
+        colorBlending.attachmentCount = 1;
+        colorBlending.pAttachments = &colorBlendAttachment;
+        colorBlending.blendConstants[0] = 0.0f; // Optional
+        colorBlending.blendConstants[1] = 0.0f; // Optional
+        colorBlending.blendConstants[2] = 0.0f; // Optional
+        colorBlending.blendConstants[3] = 0.0f; // Optional
+        
+        //Pipeline Layout
+        //Change uniform values in shaders, specifies push constants
+        VkPipelineLayoutCreateInfo pipelineLayoutInfo{};
+        pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
+        pipelineLayoutInfo.setLayoutCount = 0; // Optional
+        pipelineLayoutInfo.pSetLayouts = nullptr; // Optional
+        pipelineLayoutInfo.pushConstantRangeCount = 0; // Optional
+        pipelineLayoutInfo.pPushConstantRanges = nullptr; // Optional
+        if (vkCreatePipelineLayout(device, &pipelineLayoutInfo, nullptr, &pipelineLayout) != VK_SUCCESS) {
+            throw std::runtime_error("=====Failed to create pipeline layout!=====");
+        }
+
+
         //Destroy shader moudule
         vkDestroyShaderModule(device, fragShaderModule, nullptr);
         vkDestroyShaderModule(device, vertShaderModule, nullptr);
@@ -793,9 +935,11 @@ private:
         //Destroy image views
         for (auto imageView : swapChainImageViews) {
         vkDestroyImageView(device, imageView, nullptr);
-    }
+        }
         //在销毁设备之前清理Swap chain
         vkDestroySwapchainKHR(device, swapChain, nullptr);
+
+        vkDestroyPipelineLayout(device, pipelineLayout, nullptr);
 
         //销毁设备，销毁时设备队列也被隐式清理
         vkDestroyDevice(device, nullptr);
@@ -809,6 +953,8 @@ private:
         vkDestroySurfaceKHR(instance, surface, nullptr);
         //再销毁Innstance
         vkDestroyInstance(instance, nullptr);
+
+        
 
         glfwDestroyWindow(window);
         glfwTerminate();
