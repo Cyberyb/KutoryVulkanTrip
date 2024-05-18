@@ -99,6 +99,8 @@ private:
     VkFormat swapChainImageFormat;
     VkExtent2D swapChainExtent;
     std::vector<VkImageView> swapChainImageViews;//store the image views
+    //Render pass
+    VkRenderPass renderPass;
     //Pipeline layout
     VkPipelineLayout pipelineLayout;
 
@@ -291,6 +293,7 @@ private:
         createLogicalDevice();
         createSwapChain();
         createImageViews();
+        createRenderPass();
         createGraphicsPipeline();
     }
 
@@ -753,6 +756,45 @@ private:
         return shaderModule;
     }
 
+    void createRenderPass(){
+        //指定渲染时使用多少颜色和深度缓冲区，每个缓冲区多少samples
+        VkAttachmentDescription colorAttachment{};
+        colorAttachment.format = swapChainImageFormat;
+        colorAttachment.samples = VK_SAMPLE_COUNT_1_BIT;
+        //How to deal with the data in the attachment
+        //Color and depth
+        colorAttachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
+        colorAttachment.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
+        //Stencil
+        colorAttachment.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+        colorAttachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
+    
+        colorAttachment.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+        colorAttachment.finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
+
+        //Subpass and attachment references
+        VkAttachmentReference colorAttachmentRef{};
+        colorAttachmentRef.attachment = 0;
+        colorAttachmentRef.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+
+        VkSubpassDescription subpass{};
+        subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
+        subpass.colorAttachmentCount = 1;
+        subpass.pColorAttachments = &colorAttachmentRef;
+
+        VkRenderPassCreateInfo renderPassInfo{};
+        renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
+        renderPassInfo.attachmentCount = 1;
+        renderPassInfo.pAttachments = &colorAttachment;
+        renderPassInfo.subpassCount = 1;
+        renderPassInfo.pSubpasses = &subpass;
+
+        if (vkCreateRenderPass(device, &renderPassInfo, nullptr, &renderPass) != VK_SUCCESS) {
+            throw std::runtime_error("failed to create render pass!");
+        }
+
+    }
+
     void createGraphicsPipeline(){
         auto vertShaderCode = readFile("../shader/vert.spv");
         auto fragShaderCode = readFile("../shader/frag.spv");
@@ -940,6 +982,7 @@ private:
         vkDestroySwapchainKHR(device, swapChain, nullptr);
 
         vkDestroyPipelineLayout(device, pipelineLayout, nullptr);
+        vkDestroyRenderPass(device, renderPass, nullptr);
 
         //销毁设备，销毁时设备队列也被隐式清理
         vkDestroyDevice(device, nullptr);
